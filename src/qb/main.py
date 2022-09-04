@@ -7,9 +7,10 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import sys
+
 sys.path.insert(0, '..')
 from constants import POINTS_PER_PASS_TD, POINTS_PER_PASS_YD, POINTS_PER_PASS_INT, \
-    POINTS_PER_RUSH_YD, POINTS_PER_RUSH_TD
+    POINTS_PER_RUSH_YD, POINTS_PER_RUSH_TD, FOOTBALL_REFERENCE_YEAR, POINTS_PER_FUMBLE_LOST
 
 def convert_datatypes(df):
 
@@ -226,7 +227,10 @@ def visit_player_page(name,url):
             rush_yds = next_year_row['Rushing Yds'].unique()[0] * POINTS_PER_RUSH_YD
             rrtd = next_year_row['RRTD'].unique()[0] * POINTS_PER_RUSH_TD
 
-            fp = passing_yds + passing_td + picks + rush_yds + rrtd
+            fumbles = next_year_row['Fmb'].unique()[0] * POINTS_PER_FUMBLE_LOST
+            
+            fp_orig = passing_yds + passing_td + picks + rush_yds + rrtd
+            fp = fp_orig + fumbles
         
             career_row = df.iloc[0:i+1,:].sum(numeric_only=True, axis=0)
 
@@ -357,7 +361,7 @@ def format_df(df):
     return(df)
 
 # Start at main scrimmage page
-url = 'https://www.pro-football-reference.com/years/2021/passing.htm'
+url = f'https://www.pro-football-reference.com/years/{FOOTBALL_REFERENCE_YEAR}/passing.htm'
 base_url = 'https://www.pro-football-reference.com'
 
 player_links = dict()
@@ -418,7 +422,7 @@ test_buffer.to_csv('test.csv',index=False)
 # Generatre projections
 exec(open("predict.py").read())
 
-#train_df, test_df = visit_player_page('Tom Brady','https://www.pro-football-reference.com/players/B/BradTo00.htm')
+# train_df, test_df = visit_player_page('Tom Brady','https://www.pro-football-reference.com/players/B/BradTo00.htm')
 
-#train_df.to_csv('train_brady.csv')
-#test_df.to_csv('test_brady.csv')
+# train_df.to_csv('train_brady.csv')
+# test_df.to_csv('test_brady.csv')

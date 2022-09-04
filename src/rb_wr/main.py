@@ -6,11 +6,10 @@ import numpy as np
 import requests
 from bs4 import BeautifulSoup
 import re
-from constants import POINTS_PER_RECEPTION, POINTS_PER_FIRST_DOWN, POINTS_PER_RUSH_TD
-
-# Define constants
-# POINTS_PER_RECEPTION = 0
-# POINTS_PER_FIRST_DOWN = 0.5
+import sys
+sys.path.insert(0, '..')
+from constants import POINTS_PER_RECEPTION, POINTS_PER_FIRST_DOWN, POINTS_PER_RUSH_TD, \
+    POINTS_PER_RUSH_YD, POINTS_PER_REC_YD, POINTS_PER_FUMBLE_LOST, POINTS_PER_REC_TD
 
 def normalize_last_season(df):
 
@@ -284,9 +283,12 @@ def visit_player_page(name,url):
             career_row = table.iloc[0:i+1,:].sum(numeric_only=True, axis=0)
 
             fp = (table['Rec'].iat[i+1] * POINTS_PER_RECEPTION) + \
-                (table['RRTD'].iat[i+1] * POINTS_PER_RUSH_TD) + \
-                (table['YScm'].iat[i+1] / 10) + \
-                ((table['Rush 1D'].iat[i+1] + table['Rec 1D'].iat[i+1]) * POINTS_PER_FIRST_DOWN)
+                (table['Rush TD'].iat[i+1] * POINTS_PER_RUSH_TD) + \
+                (table['Rush Yds'].iat[i+1] * POINTS_PER_RUSH_YD) + \
+                (table['Rec TD'].iat[i+1] * POINTS_PER_REC_TD) + \
+                (table['Rec Yds'].iat[i+1] * POINTS_PER_REC_YD) + \
+                ((table['Rush 1D'].iat[i+1] + table['Rec 1D'].iat[i+1]) * POINTS_PER_FIRST_DOWN) + \
+                (table['Fmb'].iat[i+1] * POINTS_PER_FUMBLE_LOST)
 
             last_season_row = table.iloc[i,:]
 
