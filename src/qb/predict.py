@@ -49,7 +49,7 @@ reg.fit(X_train_std,y)
 
 predictions = reg.predict(X_test_std)
 
-with open('qb.csv', mode='w') as flex:
+with open('qb_flex.csv', mode='w') as flex:
     writer = csv.writer(flex, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,lineterminator = '\n')
 
     for x in range(len(predictions)):
@@ -57,7 +57,7 @@ with open('qb.csv', mode='w') as flex:
 
 cdf = pd.DataFrame(reg.coef_, columns, columns=['Coefficients'])
 
-cdf.to_csv('coefficients.csv')
+cdf.to_csv('qb_coefficients.csv')
 
 print(reg.intercept_)
 

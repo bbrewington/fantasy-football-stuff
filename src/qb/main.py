@@ -416,8 +416,8 @@ train_buffer.insert(1, 'Next Year Fantasy Points', fp)
 name2 = test_buffer.pop('Name')
 test_buffer.insert(0,'Name',name2)
 
-train_buffer.to_csv('train.csv',index=False)
-test_buffer.to_csv('test.csv',index=False)
+train_buffer.to_csv('qb_train.csv',index=False)
+test_buffer.to_csv('qb_test.csv',index=False)
 
 # Generatre projections
 exec(open("predict.py").read())

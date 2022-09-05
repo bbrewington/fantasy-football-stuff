@@ -9,7 +9,8 @@ import re
 import sys
 sys.path.insert(0, '..')
 from constants import POINTS_PER_RECEPTION, POINTS_PER_FIRST_DOWN, POINTS_PER_RUSH_TD, \
-    POINTS_PER_RUSH_YD, POINTS_PER_REC_YD, POINTS_PER_FUMBLE_LOST, POINTS_PER_REC_TD
+    POINTS_PER_RUSH_YD, POINTS_PER_REC_YD, POINTS_PER_FUMBLE_LOST, POINTS_PER_REC_TD, \
+    FOOTBALL_REFERENCE_YEAR
 
 def normalize_last_season(df):
 
@@ -402,7 +403,7 @@ def convert_datatypes(df):
     return(df)
 
 # Start at main scrimmage page
-url = 'https://www.pro-football-reference.com/years/2021/scrimmage.htm'
+url = f'https://www.pro-football-reference.com/years/{FOOTBALL_REFERENCE_YEAR}/scrimmage.htm'
 base_url = 'https://www.pro-football-reference.com'
 
 player_links = dict()
@@ -518,8 +519,8 @@ train_buffer.insert(1, 'Next Year Fantasy Points', fp)
 name2 = test_buffer.pop('Name_career')
 test_buffer.insert(0,'Name',name2)
 
-train_buffer.to_csv('train.csv',index=False)
-test_buffer.to_csv('test.csv',index=False)
+train_buffer.to_csv('rb_wr_train.csv',index=False)
+test_buffer.to_csv('rb_wr_test.csv',index=False)
 
 # Generatre projections
 exec(open("predict.py").read())

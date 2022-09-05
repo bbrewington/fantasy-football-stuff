@@ -13,7 +13,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import MinMaxScaler
 
 # Import training data
-train_data = pd.read_csv("train.csv", sep=",")
+train_data = pd.read_csv("rb_wr_train.csv", sep=",")
 
 columns = train_data.columns[2:]
 
@@ -23,7 +23,7 @@ X = np.array(train_data.drop([predict], 1)) # Features
 y = np.array(train_data[predict]) # Labels
 
 # Import testing data
-test_data = pd.read_csv("test.csv", sep=",")
+test_data = pd.read_csv("rb_wr_test.csv", sep=",")
 x_test = np.array(test_data)
 
 # Use Least Angle Regression
@@ -44,7 +44,7 @@ reg.fit(X_train_std,y)
 
 predictions = reg.predict(X_test_std)
 
-with open('flex.csv', mode='w') as flex:
+with open('rb_wr_flex.csv', mode='w') as flex:
     writer = csv.writer(flex, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,lineterminator = '\n')
 
     for x in range(len(predictions)):
@@ -52,7 +52,7 @@ with open('flex.csv', mode='w') as flex:
 
 cdf = pd.DataFrame(reg.coef_, columns, columns=['Coefficients'])
 
-cdf.to_csv('coefficients.csv')
+cdf.to_csv('rb_wr_coefficients.csv')
 
 print(reg.intercept_)
 
